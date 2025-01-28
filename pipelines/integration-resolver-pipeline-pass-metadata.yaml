@@ -34,7 +34,7 @@ spec:
           - name: revision
             value: test-metadata
           - name: pathInRepo
-            value: tasks/test_metadata.yaml
+            value: tasks/test_snapshot_component.yaml
     - name: task-on-pull-request
       description: "This task will be executed only for pre-merge events (pull requests, retest etc.)"
       when:
