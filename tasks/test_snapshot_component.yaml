@@ -65,10 +65,10 @@ spec:
       script: |
         #!/bin/sh
 
-        components=$(jq -c '.spec.components[]' <<< ${SNAPSHOT})
-        snapshotName=$(jq -c '.metadata.name' <<< ${SNAPSHOT})
-        snapshotUrl=$(jq '.metadata.annotations."pac.test.appstudio.openshift.io/source-repo-url"' <<< ${SNAPSHOT})
-        snapshotSha=$(jq -r '.metadata.annotations."pac.test.appstudio.openshift.io/sha"' <<< ${SNAPSHOT})
+        components=$(jq -c '.spec.components[]' <<< "${SNAPSHOT}")
+        snapshotName=$(jq -c '.metadata.name' <<< "${SNAPSHOT}")
+        snapshotUrl=$(jq '.metadata.annotations."pac.test.appstudio.openshift.io/source-repo-url"' <<< "${SNAPSHOT}")
+        snapshotSha=$(jq -r '.metadata.annotations."pac.test.appstudio.openshift.io/sha"' <<< "${SNAPSHOT}")
         snapshotUrlUrlWithoutSuffix=$(echo $snapshotUrl | sed 's/\(.*\)\.git*/\1/')
 
         while read repository
