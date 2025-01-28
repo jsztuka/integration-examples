@@ -3,27 +3,6 @@ kind: Task
 metadata:
   name: test-snapshot-component
 spec:
-  results:
-    - name: test-event-type
-      description: "Stores information about the event type that indicates if a job is running for a Pull Request or Push event"
-    - name: pull-request-number
-      description: "Stores information about the pull request number if exists"
-    - name: sender
-      description: "Stores information about the pull request sender if exists"
-    - name: source-git-url
-      description: "Stores information about the source git url for the change. Can be from a fork or from the same repo."
-    - name: source-git-revision
-      description: "Stores information about the source git revision for the change."
-    - name: target-git-url
-      description: "Stores information about the target git repository."
-    - name: target-git-branch
-      description: "Stores information about the target git branch."
-    - name: application-name
-      description: "Stores information about the Konflux application that the Snapshot was created for."
-    - name: component-name
-      description: "Stores information about the Konflux component that was built in case of the component-type Snapshot."
-    - name: component-container-image
-      description: "Stores information about the component's container that was built in case of the component-type Snapshot."
   params:
     - name: SNAPSHOT
       description: The JSON string of the Snapshot under test
@@ -42,26 +21,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/sha']
-        - name: COMPONENT_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['appstudio.openshift.io/component']
-        - name: PULL_REQUEST_NUMBER
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['pac.test.appstudio.openshift.io/pull-request']
-        - name: TARGET_GIT_URL
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/repo-url']
-        - name: TARGET_GIT_BRANCH
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/branch']
-        - name: SENDER
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/sender']
       script: |
         #!/bin/sh
 
