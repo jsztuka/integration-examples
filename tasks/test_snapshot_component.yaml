@@ -65,10 +65,10 @@ spec:
       script: |
         #!/bin/sh
 
-        components=$(oc get snapshot ${SNAPSHOT} -o json | jq -c '.spec.components[]')
-        snapshotName=$(oc get snapshot ${SNAPSHOT} -o json | jq -c '.metadata.name')
-        snapshotUrl=$(oc get snapshot ${SNAPSHOT} -o json | jq '.metadata.annotations."pac.test.appstudio.openshift.io/source-repo-url"')
-        snapshotSha=$(oc get snapshot ${SNAPSHOT} -o json | jq -r '.metadata.annotations."pac.test.appstudio.openshift.io/sha"')
+        components=$(oc get snapshot/${SNAPSHOT} -o json | jq -c '.spec.components[]')
+        snapshotName=$(oc get snapshot/${SNAPSHOT} -o json | jq -c '.metadata.name')
+        snapshotUrl=$(oc get snapshot/${SNAPSHOT} -o json | jq '.metadata.annotations."pac.test.appstudio.openshift.io/source-repo-url"')
+        snapshotSha=$(oc get snapshot/${SNAPSHOT} -o json | jq -r '.metadata.annotations."pac.test.appstudio.openshift.io/sha"')
         snapshotUrlUrlWithoutSuffix=$(echo $snapshotUrl | sed 's/\(.*\)\.git*/\1/')
 
         while read repository
@@ -86,5 +86,6 @@ spec:
                 exit 1
                 fi
             fi
+          echo "SUCCESS: Component $name matches snapshot $snapshotName"
           #echo "${sha}=${name}=${componentUrlWithoutSuffix}"
         done < <(echo "$components")
