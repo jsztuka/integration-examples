@@ -22,6 +22,19 @@ spec:
             value: test-metadata
           - name: pathInRepo
             value: tasks/test_metadata.yaml
+    - name: test-snapshot-component
+      params:
+        - name: SNAPSHOT
+          value: $(params.SNAPSHOT)
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/jsztuka/integration-examples
+          - name: revision
+            value: test-metadata
+          - name: pathInRepo
+            value: tasks/test_metadata.yaml
     - name: task-on-pull-request
       description: "This task will be executed only for pre-merge events (pull requests, retest etc.)"
       when:
