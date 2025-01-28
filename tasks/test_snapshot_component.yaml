@@ -71,13 +71,13 @@ spec:
         snapshotSha=$(jq -r '.metadata.annotations."pac.test.appstudio.openshift.io/sha"' <<< "${SNAPSHOT}")
         snapshotUrlUrlWithoutSuffix=$(echo $snapshotUrl | sed 's/\(.*\)\.git*/\1/')
 
-        while read repository
+        while read components
         do
           # Variables
-          componentUrl=$(echo "$repository" | jq -r '.source.git.url')
+          componentUrl=$(echo "$components" | jq -r '.source.git.url')
           componentUrlWithoutSuffix=$(echo $componentUrl | sed 's/\(.*\)\.git*/\1/')
-          name=$(echo "$repository" | jq -r '.name')
-          componentSha=$(echo "$repository" | jq -r '.source.git.revision')
+          name=$(echo "$components" | jq -r '.name')
+          componentSha=$(echo "$components" | jq -r '.source.git.revision')
 
             # Check if component git url equals to snapshot git url, if yes check if the snapshot SHA equals to component SHA
             if [[ \"$componentUrlWithoutSuffix\" == $snapshotUrlUrlWithoutSuffix ]]; then
