@@ -32,7 +32,7 @@ spec:
           - name: url
             value: https://github.com/jsztuka/integration-examples
           - name: revision
-            value: test-metadata
+            value: main
           - name: pathInRepo
             value: tasks/test_snapshot_component.yaml
     - name: task-on-pull-request
