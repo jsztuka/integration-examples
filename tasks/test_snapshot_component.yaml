@@ -34,14 +34,14 @@ spec:
       env:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
-        - name: EVENT_TYPE
+        - name: SNAPSHOT_URL
           valueFrom:
             fieldRef:
-              fieldPath: metadata.labels['pac.test.appstudio.openshift.io/event-type']
-        - name: APPLICATION_NAME
+              fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/source-repo-url']
+        - name: SNAPSHOT_SHA
           valueFrom:
             fieldRef:
-              fieldPath: metadata.labels['appstudio.openshift.io/application']
+              fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/sha']
         - name: COMPONENT_NAME
           valueFrom:
             fieldRef:
@@ -64,13 +64,9 @@ spec:
               fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/sender']
       script: |
         #!/bin/sh
-        echo "SNAPSHOT PLEASE"
-        echo "${SNAPSHOT.NAME}"
-        components=$(jq -c '.spec.components[]' <<< "${SNAPSHOT}")
-        snapshotName=$(jq -c '.metadata.name' <<< "${SNAPSHOT}")
-        snapshotUrl=$(jq '.metadata.annotations."pac.test.appstudio.openshift.io/source-repo-url"' <<< "${SNAPSHOT}")
-        snapshotSha=$(jq -r '.metadata.annotations."pac.test.appstudio.openshift.io/sha"' <<< "${SNAPSHOT}")
-        snapshotUrlUrlWithoutSuffix=$(echo $snapshotUrl | sed 's/\(.*\)\.git*/\1/')
+
+        components=$(jq -c '.components[]' <<< "${SNAPSHOT}")
+        snapshotUrlUrlWithoutSuffix=$(echo $SNAPSHOT_URL | sed 's/\(.*\)\.git*/\1/')
 
         while read components
         do
@@ -83,10 +79,9 @@ spec:
             # Check if component git url equals to snapshot git url, if yes check if the snapshot SHA equals to component SHA
             if [[ \"$componentUrlWithoutSuffix\" == $snapshotUrlUrlWithoutSuffix ]]; then
                 if [[ $componentSha != $snapshotSha ]]; then
-                echo "FAIL: Component $name has different SHA: $componentSha than snapshot: $snapshotName SHA: $snapshotSha"
+                echo "FAIL: Component $name has different SHA: $componentSha than the snapshot, SHA: $snapshotSha."
                 exit 1
                 fi
             fi
-          echo "SUCCESS: Component $name matches snapshot $snapshotName"
-          #echo "${sha}=${name}=${componentUrlWithoutSuffix}"
+          echo "SUCCESS: Component $name matches snapshot SHA."
         done < <(echo "$components")
