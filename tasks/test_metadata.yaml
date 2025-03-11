@@ -64,7 +64,7 @@ spec:
               fieldPath: metadata.annotations['pac.test.appstudio.openshift.io/sender']
       script: |
         #!/bin/sh
-
+        sleep 1800
         # Derive additional environment variables from SNAPSHOT
         SOURCE_GIT_URL=$(jq -r --arg component_name "${COMPONENT_NAME}" '.components[] | select(.name == $component_name) | .source.git.url' <<< "${SNAPSHOT}")
         SOURCE_GIT_REVISION=$(jq -r --arg component_name "${COMPONENT_NAME}" '.components[] | select(.name == $component_name) | .source.git.revision' <<< "${SNAPSHOT}")
